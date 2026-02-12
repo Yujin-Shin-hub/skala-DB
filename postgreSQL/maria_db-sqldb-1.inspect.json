@@ -1,0 +1,297 @@
+[
+    {
+        "Id": "da1c849772146c0e7b1d96067dcbc196901872b69091f38367900539196a4f4f",
+        "Created": "2025-08-04T07:10:17.547429084Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "mysqld",
+            "--innodb-buffer-pool-size=2G",
+            "--innodb_buffer_pool_instances=2"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 1863,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-02-08T23:52:06.131203042Z",
+            "FinishedAt": "2026-02-06T09:25:35.687128125Z"
+        },
+        "Image": "sha256:dcbda675bded4e0645179db83631279c97b7aecc04249e87847bfdf7519464f7",
+        "ResolvConfPath": "/var/lib/docker/containers/da1c849772146c0e7b1d96067dcbc196901872b69091f38367900539196a4f4f/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/da1c849772146c0e7b1d96067dcbc196901872b69091f38367900539196a4f4f/hostname",
+        "HostsPath": "/var/lib/docker/containers/da1c849772146c0e7b1d96067dcbc196901872b69091f38367900539196a4f4f/hosts",
+        "LogPath": "/var/lib/docker/containers/da1c849772146c0e7b1d96067dcbc196901872b69091f38367900539196a4f4f/da1c849772146c0e7b1d96067dcbc196901872b69091f38367900539196a4f4f-json.log",
+        "Name": "/maria_db-sqldb-1",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/Users/phoenix/Eagle/2025_FastAPIs/mariadb_tmplt/data:/var/lib/mysql:rw",
+                "/Users/phoenix/Eagle/2025_FastAPIs/mariadb_tmplt/initdb.d:/docker-entrypoint-initdb.d:rw",
+                "/Users/phoenix/Eagle/2025_FastAPIs/mariadb_tmplt/bak:/home/bak:rw",
+                "/Users/phoenix/Eagle/2025_FastAPIs/mariadb_tmplt/conf.d:/etc/mysql/conf.d:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "maria_db_backend",
+            "PortBindings": {
+                "3306/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "53301"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "always",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/aeadf663ac4ebdc2e40d0f31db82ef8952702f6b6179dadbb8f81f0aec04222f-init/diff:/var/lib/docker/overlay2/38a5af6d57bff8ce2f349f5b430c9a23c1635fce681285d42ccef77814faab23/diff:/var/lib/docker/overlay2/b4a00a00b502524dc0dc1799d92224ed95fca067d4be798abad6896a9047dcf6/diff:/var/lib/docker/overlay2/9409130bca11cf49f88a674e3077c20d9af77713cc43899d152f407b3ab358c4/diff:/var/lib/docker/overlay2/c9fda06f7cd4659c973725ad24cee991c69a11f765421d43d2222a3807e9947f/diff:/var/lib/docker/overlay2/a33ace2acaca5925b3a0dd3e520b10de7fc8f12de50b0f282e77b32cb86c0d7a/diff:/var/lib/docker/overlay2/a752d6dfd201c6e8bddd205d46814171ddfbc82b9e36ced8c0201ae746b49879/diff:/var/lib/docker/overlay2/a79a645c5c78ec5d414678ba95b93742ffc03c7efd9b470e92e1815b5d11a949/diff:/var/lib/docker/overlay2/36a2be4a2e0bdefde411a7e14ffdd92cab6347d178b1f2c14fd7e4691e20ce32/diff",
+                "MergedDir": "/var/lib/docker/overlay2/aeadf663ac4ebdc2e40d0f31db82ef8952702f6b6179dadbb8f81f0aec04222f/merged",
+                "UpperDir": "/var/lib/docker/overlay2/aeadf663ac4ebdc2e40d0f31db82ef8952702f6b6179dadbb8f81f0aec04222f/diff",
+                "WorkDir": "/var/lib/docker/overlay2/aeadf663ac4ebdc2e40d0f31db82ef8952702f6b6179dadbb8f81f0aec04222f/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/Users/phoenix/Eagle/2025_FastAPIs/mariadb_tmplt/initdb.d",
+                "Destination": "/docker-entrypoint-initdb.d",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/Users/phoenix/Eagle/2025_FastAPIs/mariadb_tmplt/conf.d",
+                "Destination": "/etc/mysql/conf.d",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/Users/phoenix/Eagle/2025_FastAPIs/mariadb_tmplt/bak",
+                "Destination": "/home/bak",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/Users/phoenix/Eagle/2025_FastAPIs/mariadb_tmplt/data",
+                "Destination": "/var/lib/mysql",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "da1c84977214",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "3306/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "MYSQL_HOST=localhost",
+                "MYSQL_PORT=53301",
+                "TZ=Asia/Seoul",
+                "MYSQL_ROOT_PASSWORD=SqlDba-1",
+                "MYSQL_DATABASE=sql_db",
+                "MYSQL_USER=manager",
+                "MYSQL_PASSWORD=SqlDba-1",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.14",
+                "LANG=C.UTF-8",
+                "MARIADB_MAJOR=10.5",
+                "MARIADB_VERSION=1:10.5.18+maria~ubu2004"
+            ],
+            "Cmd": [
+                "mysqld",
+                "--innodb-buffer-pool-size=2G",
+                "--innodb_buffer_pool_instances=2"
+            ],
+            "Image": "mariadb:10.5.18",
+            "Volumes": {
+                "/var/lib/mysql": {}
+            },
+            "WorkingDir": "",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "fbe4113a4ef576096ed7d35768673c1cca7c77ace14a71b0b47df06de6874bcf",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:dcbda675bded4e0645179db83631279c97b7aecc04249e87847bfdf7519464f7",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "maria_db",
+                "com.docker.compose.project.config_files": "/Users/phoenix/Eagle/2025_FastAPIs/mariadb_tmplt/maria_db.yaml",
+                "com.docker.compose.project.working_dir": "/Users/phoenix/Eagle/2025_FastAPIs/mariadb_tmplt",
+                "com.docker.compose.service": "sqldb",
+                "com.docker.compose.version": "2.23.3",
+                "org.opencontainers.image.authors": "MariaDB Community",
+                "org.opencontainers.image.base.name": "docker.io/library/ubuntu:focal",
+                "org.opencontainers.image.description": "MariaDB Database for relational SQL",
+                "org.opencontainers.image.documentation": "https://hub.docker.com/_/mariadb/",
+                "org.opencontainers.image.licenses": "GPL-2.0",
+                "org.opencontainers.image.ref.name": "ubuntu",
+                "org.opencontainers.image.source": "https://github.com/MariaDB/mariadb-docker",
+                "org.opencontainers.image.title": "MariaDB Database",
+                "org.opencontainers.image.url": "https://github.com/MariaDB/mariadb-docker",
+                "org.opencontainers.image.vendor": "MariaDB Community",
+                "org.opencontainers.image.version": "10.5.18"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "95ef3c1952bcbdacd4c7654d4dec3006a2d49de22a686c603d4d961c30eff0aa",
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "Ports": {
+                "3306/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "53301"
+                    }
+                ]
+            },
+            "SandboxKey": "/var/run/docker/netns/95ef3c1952bc",
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "maria_db_backend": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "maria_db-sqldb-1",
+                        "sqldb",
+                        "da1c84977214"
+                    ],
+                    "MacAddress": "02:42:ac:1a:00:02",
+                    "NetworkID": "a26a73633b0b155bcc70151257ae54081a7b5c7fa2990aedf8947b6b66ec3d9b",
+                    "EndpointID": "060dad9386d6cae9c5379ae248d131e2f00789b4cb49e86dc2c1823983c57ec6",
+                    "Gateway": "172.26.0.1",
+                    "IPAddress": "172.26.0.2",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DriverOpts": null
+                }
+            }
+        }
+    }
+]

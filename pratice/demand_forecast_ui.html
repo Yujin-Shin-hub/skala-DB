@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SK hynix AI SCM - Demand & Yield Intelligence</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.21/vue.global.prod.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #f4f6fb;
+  --white: #ffffff;
+  --border: #e4e8f0;
+  --border2: #cfd7e6;
+  --text1: #141824;
+  --text2: #4a5568;
+  --text3: #94a0b2;
+  --sk-orange: #ff5c1a;
+  --sk-red: #f03030;
+  --blue: #3b82f6;
+  --green: #10b981;
+  --yellow: #f59e0b;
+  --purple: #7c3aed;
+  --purple2: #5b21b6;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Noto Sans KR', sans-serif;
+  --radius: 12px;
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text1);
+  min-height: 100vh;
+}
+
+.topnav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 18px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--sk-orange), #e03a00);
+  color: #fff;
+  font: 700 11px var(--mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-name { font-size: 24px; font-weight: 800; letter-spacing: -0.2px; }
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 100%;
+}
+
+.tab {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text3);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover { color: var(--text2); }
+.tab.active {
+  color: var(--sk-orange);
+  border-bottom-color: var(--sk-orange);
+}
+
+.spacer { flex: 1; }
+
+.head-pill {
+  background: #eef2fb;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font: 600 11px var(--mono);
+  color: #65728a;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 24px 42px;
+}
+
+.workspace {
+  display: block;
+}
+
+.sidebar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 10px;
+  width: 230px;
+  height: calc(100vh - 76px);
+  position: fixed;
+  top: 64px;
+  left: 12px;
+  z-index: 120;
+  transform: translateX(-120%);
+  transition: transform .2s ease;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 56px 0 0 0;
+  background: rgba(20, 24, 36, 0.28);
+  z-index: 110;
+}
+
+.menu-btn {
+  border: 1px solid var(--border2);
+  background: var(--white);
+  color: var(--text2);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.side-title {
+  font: 700 10px var(--mono);
+  color: var(--text3);
+  margin: 4px 4px 8px;
+}
+
+.side-menu { display: grid; gap: 6px; }
+
+.side-item {
+  border: 1px solid var(--border);
+  background: #fafbff;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.side-item:hover { border-color: var(--border2); }
+
+.side-item.active {
+  border-color: var(--sk-orange);
+  background: #fff4ee;
+  color: var(--sk-orange);
+}
+
+.top-sub {
+  color: var(--text3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.row { display: grid; gap: 14px; }
+.row-4 { grid-template-columns: repeat(4, 1fr); }
+.row-3 { grid-template-columns: repeat(3, 1fr); }
+.row-2 { grid-template-columns: repeat(2, 1fr); }
+.row-2-1 { grid-template-columns: 2fr 1fr; }
+.mb14 { margin-bottom: 14px; }
+.mb18 { margin-bottom: 18px; }
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.card-head {
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title { font-size: 13px; font-weight: 800; flex: 1; }
+.card-badge {
+  font: 700 10px var(--mono);
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #eef3ff;
+  color: #315fa8;
+}
+
+.icon-box {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f4ff;
+  color: #3756a8;
+  font-size: 14px;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.filter-label {
+  font: 700 11px var(--mono);
+  color: var(--text3);
+  margin-right: 2px;
+}
+
+.filter-btn {
+  border: 1px solid var(--border2);
+  background: var(--white);
+  color: var(--text2);
+  border-radius: 20px;
+  padding: 6px 13px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.filter-btn.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+.filter-select {
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 6px 9px;
+  font-size: 11.5px;
+  color: var(--text1);
+  background: var(--white);
+}
+
+.download-btn {
+  margin-left: auto;
+  border: 1px solid var(--border2);
+  border-radius: 9px;
+  padding: 7px 12px;
+  background: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text2);
+  cursor: pointer;
+}
+
+.ai-banner {
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  color: #fff;
+  background: linear-gradient(135deg, #4f46e5 0%, #6d28d9 45%, #7c3aed 100%);
+  box-shadow: 0 10px 24px rgba(91, 33, 182, 0.24);
+  margin-bottom: 16px;
+}
+
+.banner-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.banner-list { display: grid; gap: 6px; }
+.banner-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.banner-foot {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.24);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font: 600 10px var(--mono);
+  opacity: 0.9;
+}
+
+.kpi {
+  padding: 15px 18px;
+}
+
+.kpi-label {
+  font: 700 10px var(--mono);
+  color: var(--text3);
+  letter-spacing: 0.6px;
+  margin-bottom: 7px;
+}
+
+.kpi-value {
+  font: 900 34px var(--mono);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.kpi-sub {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+.kpi-bar {
+  margin-top: 10px;
+  height: 4px;
+  border-radius: 4px;
+  background: #e8edf6;
+  overflow: hidden;
+}
+
+.kpi-fill {
+  height: 100%;
+}
+
+.buffer {
+  border-top: 1px solid var(--border);
+  padding: 13px 18px;
+}
+
+.buffer-title {
+  font: 700 11px var(--mono);
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+
+.buffer-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.buffer-row input[type='range'] {
+  flex: 1;
+}
+
+.formula {
+  margin: 12px 18px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #f8fafe;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  font: 700 10px var(--mono);
+}
+
+.term {
+  border-radius: 7px;
+  padding: 5px 8px;
+}
+
+.t-purple { background: #f2ebff; color: #6d28d9; }
+.t-orange { background: #fff2eb; color: var(--sk-orange); }
+.t-blue { background: #e9f1ff; color: var(--blue); }
+.t-green { background: #ecfdf5; color: var(--green); }
+.t-red { background: #feefef; color: var(--sk-red); }
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 10px 0 8px;
+  font-size: 11px;
+  color: var(--text2);
+}
+
+.legend i {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.chart-wrap {
+  height: 220px;
+  padding: 0 18px 14px;
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  overflow-x: auto;
+}
+
+.group {
+  min-width: 80px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  position: relative;
+}
+
+.bar {
+  flex: 1;
+  border-radius: 5px 5px 0 0;
+  min-height: 4px;
+}
+
+.xlabel {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font: 600 9px var(--mono);
+  color: var(--text3);
+  white-space: nowrap;
+}
+
+.table-wrap { overflow-x: auto; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.table th {
+  background: #f7f9fd;
+  border-bottom: 1px solid var(--border);
+  color: var(--text3);
+  font: 700 10px var(--mono);
+  padding: 10px 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table td {
+  border-bottom: 1px solid #edf1f8;
+  padding: 11px 10px;
+  color: var(--text2);
+  vertical-align: middle;
+}
+
+.table tr:last-child td { border-bottom: 0; }
+.table tr:hover td { background: #fcfdff; }
+
+.td-code { font: 700 11px var(--mono); color: var(--text1); }
+.td-name { font-weight: 700; color: var(--text1); }
+.td-num { font: 700 11px var(--mono); text-align: right; color: var(--text1); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font: 700 10px var(--mono);
+}
+
+.b-purple { color: #6d28d9; background: #f2ebff; }
+.b-blue { color: #2a67c8; background: #e9f1ff; }
+.b-green { color: #0f9d76; background: #ecfdf5; }
+.b-red { color: #d73b31; background: #fff1f0; }
+.b-yellow { color: #ce8100; background: #fff8e7; }
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border);
+  background: #f7f9fd;
+}
+
+.summary-item {
+  padding: 11px;
+  text-align: center;
+}
+
+.summary-label {
+  font: 700 9px var(--mono);
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+
+.summary-value {
+  font: 900 26px var(--mono);
+}
+
+.stat-list { display: grid; gap: 8px; }
+
+.stat-item {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px;
+  background: #fff;
+}
+
+.stat-title { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+.stat-desc { font-size: 12px; color: var(--text2); line-height: 1.45; }
+
+.arch-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.arch-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  background: #fbfcff;
+}
+
+.arch-item h4 { font-size: 15px; margin-bottom: 4px; }
+.arch-item p { font-size: 12px; color: var(--text2); line-height: 1.45; }
+
+.fade-in {
+  animation: fade 0.28s ease both;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+    height: calc(100vh - 70px);
+    top: 58px;
+    left: 8px;
+  }
+  .row-4, .row-3, .row-2, .row-2-1, .summary, .arch-grid { grid-template-columns: 1fr 1fr; }
+  .banner-title { font-size: 15px; }
+  .banner-item { font-size: 12px; }
+}
+
+@media (max-width: 720px) {
+  .container { padding: 14px; }
+  .topnav { padding: 0 12px; flex-wrap: wrap; height: auto; }
+  .top-sub { width: 100%; }
+  .row-4, .row-3, .row-2, .row-2-1, .summary, .arch-grid { grid-template-columns: 1fr; }
+  .download-btn { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <nav class="topnav">
+    <button class="menu-btn" @click="isSidebarOpen = !isSidebarOpen">☰</button>
+    <div class="brand">
+      <div class="brand-logo">SK</div>
+      <div class="brand-name">AI SCM</div>
+    </div>
+    <div class="top-sub">Hybrid Intelligence SCM Control Tower</div>
+    <div class="spacer"></div>
+    <div class="head-pill">공장: {{ selectedFactory }}</div>
+    <div class="head-pill">{{ currentTime }}</div>
+  </nav>
+
+  <main class="container">
+    <div class="workspace">
+      <div v-if="isSidebarOpen" class="sidebar-overlay" @click="isSidebarOpen = false"></div>
+      <aside class="sidebar" :class="{open: isSidebarOpen}">
+        <div class="side-title">MENU</div>
+        <div class="side-menu">
+          <button class="side-item" :class="{active: activePage==='dashboard'}" @click="activePage='dashboard'; isSidebarOpen=false">▦ 대시보드</button>
+          <button class="side-item" :class="{active: activePage==='forecast'}" @click="activePage='forecast'; isSidebarOpen=false">↗ 수요 예측</button>
+          <button class="side-item" :class="{active: activePage==='customer'}" @click="activePage='customer'; isSidebarOpen=false">◉ 고객 인사이트</button>
+          <button class="side-item" :class="{active: activePage==='yield'}" @click="activePage='yield'; isSidebarOpen=false">◇ 수율 전략</button>
+          <button class="side-item" :class="{active: activePage==='chatbot'}" @click="activePage='chatbot'; isSidebarOpen=false">✦ RAG 챗봇</button>
+        </div>
+      </aside>
+
+      <section>
+        <dashboard-tab
+          v-if="activePage==='dashboard'"
+          :total-order-qty="totalOrderQty"
+          :key-account-rate="keyAccountRate"
+          :avg-pred-yield="avgPredYield"
+        ></dashboard-tab>
+
+        <forecast-tab
+          v-if="activePage==='forecast'"
+          :selected-factory="selectedFactory"
+          :period="period"
+          :period-label="periodLabel"
+          :scenario="scenario"
+          :selected-group="selectedGroup"
+          :buffer-pct="bufferPct"
+          :current-time="currentTime"
+          :filtered-materials="filteredMaterials"
+          :chart-data="chartData"
+          :chart-max="chartMax"
+          :sum-forecast="sumForecast"
+          :sum-stock="sumStock"
+          :total-order-qty="totalOrderQty"
+          :urgent-count="urgentCount"
+          :avg-coverage="avgCoverage"
+          :ai-recommendations="aiRecommendations"
+          @update:period="period = $event"
+          @update:scenario="scenario = $event"
+          @update:selectedGroup="selectedGroup = $event"
+          @update:bufferPct="bufferPct = $event"
+          @update:selectedFactory="selectedFactory = $event"
+        ></forecast-tab>
+
+        <customer-tab
+          v-if="activePage==='customer'"
+          :client-scoring="clientScoring"
+          :allocation-rows="allocationRows"
+          :key-account-rate="keyAccountRate"
+        ></customer-tab>
+
+        <yield-tab
+          v-if="activePage==='yield'"
+          :yield-rows="yieldRows"
+          :defects="defects"
+          :rag-qa="ragQa"
+        ></yield-tab>
+
+        <chatbot-tab
+          v-if="activePage==='chatbot'"
+          :rag-qa="ragQa"
+          :current-time="currentTime"
+        ></chatbot-tab>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="./components/dashboard-tab.js"></script>
+<script src="./components/forecast-tab.js"></script>
+<script src="./components/customer-tab.js"></script>
+<script src="./components/yield-tab.js"></script>
+<script src="./components/chatbot-tab.js"></script>
+<script src="./js/app.js"></script>
+</body>
+</html>

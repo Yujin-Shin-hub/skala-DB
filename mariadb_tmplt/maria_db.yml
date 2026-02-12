@@ -1,0 +1,62 @@
+# version: "3.8"
+
+services:
+  sqldb:
+    image: mariadb:10.5.18
+    container_name: sqldb
+    ports:
+      - "3379:3306"
+
+    env_file:
+      - ./.env
+
+    environment:
+      TZ: Asia/Seoul
+
+    volumes:
+      # MariaDB 설정 파일
+      - ./conf.d:/etc/mysql/conf.d:ro
+
+      # DB 데이터 (영구 저장)
+      - ./data:/var/lib/mysql
+
+      # 초기 SQL 스크립트 (최초 초기화시에만 실행됨)
+      - ./initdb.d:/docker-entrypoint-initdb.d:ro
+
+      # 백업 디렉토리
+      - ./bak:/home/bak
+
+    # 호스트 메모리 상황에 따라 2G 조정 가능(예: 전체 8GB 이상이면 OK / 4GB면 512M~1G 추천)
+
+    command:
+      - mysqld
+      - --innodb_buffer_pool_size=2G
+      - --innodb_buffer_pool_instances=2
+      - --lower_case_table_names=1 # lower_case_table_names=1 옵션은 DB 이름 규칙을 OS로부터 독립시키는 안전 장치로 모든 테이블을 소문자로 통일하여 컨테이너 DBMS를 OS 환경 차이로부터 분리
+      # Ground Rule : 모든 테이블명/컬럼명은 소문자로 작성
+
+    networks:
+      - backend
+
+    restart: unless-stopped
+
+networks:
+  backend:
+    driver: bridge
+
+# 이 컨테이너 생성 명령어 실행 전에 반드시 도커 데스크탑이 먼저 실행되고 있어야 합니다.
+# docker-compose로 실행바랍니다. (참고로 docker compose가 최신 버전입니다.) 
+# docker-compose -p <프로젝트명> -f <파일명> up -d, mariadb.yml -> 기본 파일인 docker-compose.yml 대신 사용
+# docker-compose -p maria_db -f maria_db.yml up -d
+
+# client는 다음 링크에서 Mysql Workbench 다운로드하여 사용
+# https://dev.mysql.com/downloads/workbench/
+
+# DBMS 접속 후, 다음 스키마 정보가 없을 경우에 생성하여 사용.
+# > CREATE SCHEMA 'demo' DEFAULT CHARACTER SET utf8mb4 ;
+# > CREATE SCHEMA 'sql_db' DEFAULT CHARACTER SET utf8mb4 ;
+
+# 사용자 생성 (manager가 없을 경우) 및 권한 부여
+# > CREATE USER 'manager'@'%' IDENTIFIED BY 'SqlDba-1’ ; 컨테이너로 실행한 경우는 Manager는 이미 생성되어 있으므로 생략합니다.
+# > GRANT ALL PRIVILEGES ON demo.* TO 'manager'@'%' IDENTIFIED BY 'SqlDba-1’;
+# > FLUSH PRIVILEGES;

@@ -1,0 +1,51 @@
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Env / secrets
+.env
+*.env
+*.env.*
+!.env.example
+
+# Logs / runtime
+*.log
+logs/
+*.pid
+
+# Archives / backups
+*.zip
+*.tar
+*.gz
+*.bak
+
+# Node / frontend artifacts
+node_modules/
+dist/
+build/
+coverage/
+
+# Python artifacts
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Java / Gradle
+.gradle/
+out/
+
+# Database volumes / generated data
+mariadb_tmplt/data/
+mariadb_tmplt/bak/
+postgreSQL/data/
+postgreSQL/__MACOSX/
+mariadb_tmplt/__MACOSX/
+
+# Temporary files
+tmp/
+.temp/
+*.tmp
